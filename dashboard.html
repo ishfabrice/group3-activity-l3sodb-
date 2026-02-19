@@ -1,0 +1,93 @@
+
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+</head>
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="dash.css">
+<body>
+    <header>
+<h1>📶smis|<span>stock investory Management</span></h1>
+
+<h1 id="welcomeUser"></h1>
+<button onclick="logout()">[-></button>
+    </header>
+
+
+<section>
+    <aside> 
+        <div id="content">
+  <h2>Welcome!</h2>
+</div>
+        <ul>
+        <li><a href="#dashboard.html">⏹️Dashboard</a></li><br></br>
+        <li><a href="product.html">©️product</a></li><br></br>
+        <li><a href="report.html">®️report</a></li><br></br>
+        <li><a href="setting.html">🟦setting</a></li><br><br><br>
+        </ul>
+    </aside>
+    <main>
+        <div class="fabrice">            
+      <h1>Dashboard</h1>
+      <p>over view investory status</p>
+        </div>
+        
+            <div class="musirikare">
+                <div>
+                    <fieldset>
+                        <p>Total product</p>
+                        <h1>248</h1>
+                        <p>+12 this month</p>
+                    </fieldset>
+                </div>
+                 <div>
+                    <fieldset>
+                        <p>IN stock</p>
+                        <h1>205</h1>
+                        <p>82.7%</p>
+                    </fieldset>
+                </div>
+                 <div>
+                    <fieldset>
+                        <p>out stock</p>
+                        <h1>43</h1>
+                        <p>17.3%</p>
+                    </fieldset>
+                </div>
+                
+            </div>
+<h3>Add New Product</h3>
+<form id="productForm">
+  <input type="text" id="productName" placeholder="Product name" required>
+  <input type="number" id="productId" placeholder="Product ID" required>
+  <input type="number" id="quantity" placeholder="Quantity" required>
+  <input type="number" id="price" placeholder="Price" required>
+  <button type="submit">Add Product</button>
+</form>
+<div class="ishuri">
+<h3>Products added</h3>
+<input type="text" id="searchInput" placeholder="Shaka product.......                                 🔍" onkeyup="searchProduct()">
+</div>
+<table id="dashboardTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>ID</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<a href="product.html" class="dash">Jya kuri Product Page=></a>
+</div>
+    </main>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
+

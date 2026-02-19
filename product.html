@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+<meta charset="UTF-8">
+<title>Product Page</title>
+<link rel="stylesheet" href="product.css">
+</head>
+<body>
+<button><a href="dashboard.html">back on dashboard =></a></button>
+<h2>All Products</h2>
+<input type="text" id="productPageSearch" placeholder="Shaka product..." onkeyup="searchProductsPage()">
+
+<table id="productPageTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>ID</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+
+<script>
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+function displayProductsPage(list = products) {
+    let tableBody = document.querySelector("#productPageTable tbody");
+    tableBody.innerHTML = "";
+    list.forEach(p => {
+        let row = document.createElement("tr");
+        row.innerHTML = `<td>${p.name}</td>
+                         <td>${p.id}</td>
+                         <td>${p.quantity}</td>
+                         <td>${p.price}</td>`;
+        tableBody.appendChild(row);
+    });
+}
+
+function searchProductsPage() {
+    let input = document.getElementById("productPageSearch").value.toLowerCase();
+    let filtered = products.filter(p => p.name.toLowerCase().includes(input));
+    displayProductsPage(filtered);
+}
+
+displayProductsPage();
+</script>
+</body>
+</html>
