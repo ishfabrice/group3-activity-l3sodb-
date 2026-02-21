@@ -1,52 +1,59 @@
-<!DOCTYPE html>
-<html lang="rw">
-<head>
-<meta charset="UTF-8">
-<title>Product Page</title>
-<link rel="stylesheet" href="product.css">
-</head>
-<body>
-<button><a href="dashboard.html">back on dashboard =></a></button>
-<h2>All Products</h2>
-<input type="text" id="productPageSearch" placeholder="Shaka product..." onkeyup="searchProductsPage()">
-
-<table id="productPageTable">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>ID</th>
-      <th>Quantity</th>
-      <th>Price</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<html>
+  <head>
+    <title>sims project</title>
+    <link rel="stylesheet" href="product.css">
+    
+  </head>
 
 
+  <body>
 
-<script>
-let products = JSON.parse(localStorage.getItem("products")) || [];
+<h2 id="productpageSearch">All Products added </h2>
+
+<input type="text" id="productPageSearch" 
+placeholder="Shaka product..." 
+onkeyup="searchProductsPage()">
+
+<div id="productContainer" class="card-container"></div>
+<button class="btn"><a href="report.html">view product</a><button>
+  </body>
+  <script>
+    let products = JSON.parse(localStorage.getItem("products")) || [];
 
 function displayProductsPage(list = products) {
-    let tableBody = document.querySelector("#productPageTable tbody");
-    tableBody.innerHTML = "";
+    let container = document.getElementById("productContainer");
+    container.innerHTML = "";
+
     list.forEach(p => {
-        let row = document.createElement("tr");
-        row.innerHTML = `<td>${p.name}</td>
-                         <td>${p.id}</td>
-                         <td>${p.quantity}</td>
-                         <td>${p.price}</td>`;
-        tableBody.appendChild(row);
+        let card = document.createElement("div");
+        card.className = "product-card";
+
+        card.innerHTML = `
+            <h3>${p.name}</h3>
+            <p><strong>ID:</strong> ${p.id}</p>
+            <p><strong>Quantity:</strong> ${p.quantity}</p>
+            <p><strong>Price:</strong> $${p.price}</p>
+            <button onclick="deleteProduct('${p.id}')">Delete</button>
+        `;
+
+        container.appendChild(card);
     });
 }
 
 function searchProductsPage() {
     let input = document.getElementById("productPageSearch").value.toLowerCase();
-    let filtered = products.filter(p => p.name.toLowerCase().includes(input));
+    let filtered = products.filter(p => 
+        p.name.toLowerCase().includes(input)
+    );
     displayProductsPage(filtered);
 }
 
+function deleteProduct(id) {
+    products = products.filter(p => p.id !== id);
+    localStorage.setItem("products", JSON.stringify(products));
+    displayProductsPage();
+}
+
 displayProductsPage();
-</script>
-</body>
-</html>
+  </script>
+  <html>

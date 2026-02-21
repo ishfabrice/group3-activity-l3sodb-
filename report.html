@@ -1,21 +1,82 @@
+<!DOCTYPE html>
 <html>
-    <head><title>report product</title></head>
-    <link rel="stylesheet" href="dash.css"/>
-    
-    <body>
-        <select id="reportProductSelect"></select>
+<head>
+<title>View Product</title>
+<link rel="stylesheet" href="report.css">
+</head>
+<body>
+    <div class="fi">
+        <div>
+            <fieldset>
+                
+    <img src="images/product.jpg" alt="Product Image">
 
-<button onclick="addToCart()" class="emmy">Add to Cart</button>
+                <p></p>
+            </fieldset>
+        </div>
+         <div>
+            <fieldset>
+                
+    <img src="images/product.jpg" alt="Product Image">
 
-<table id="cartTable">
-<thead>
-<tr>
-<th>Name</th>
-<th>Price</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-<script src="script.js"></script>
-    </body>
+                <p></p>
+            </fieldset>
+        </div>
+         <div>
+            <fieldset>
+                
+    <img src="images/product.jpg" alt="Product Image">
+
+                <p></p>
+            </fieldset>
+        </div>
+         <div>
+            <fieldset>
+                
+    <img src="images/product.jpg" alt="Product Image">
+
+                <p></p>
+            </fieldset>
+        </div>
+         <div>
+            <fieldset>
+                
+    <img src="images/product.jpg" alt="Product Image">
+
+                <p></p>
+            </fieldset>
+        </div> <div>
+            <fieldset>
+            
+    <img src="images/product.jpg" alt="Product Image">
+
+                <p></p>
+            </fieldset>
+        </div>
+    </div>
+
+<button onclick="goBack()">⬅ Back</button>
+
+<div id="productDetails"></div>
+
+<script>
+let products = JSON.parse(localStorage.getItem("products")) || [];
+let index = localStorage.getItem("selectedProduct");
+
+let product = products[index];
+
+document.getElementById("productDetails").innerHTML = `
+    <img src="${product.image}" class="product-img">
+    <h2>${product.name}</h2>
+    <p><strong>ID:</strong> ${product.id}</p>
+    <p><strong>Quantity:</strong> ${product.quantity}</p>
+    <p><strong>Price:</strong> $${product.price}</p>
+`;
+
+function goBack(){
+    window.history.back();
+}
+</script>
+
+</body>
 </html>
