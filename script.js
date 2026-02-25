@@ -1,6 +1,6 @@
 
-function register() {
 
+function register() {
     let username = document.getElementById("regUsername").value;
     let email = document.getElementById("regEmail").value;
     let password = document.getElementById("regPassword").value;
@@ -17,7 +17,6 @@ function register() {
     }
 
     let users = JSON.parse(localStorage.getItem("users")) || [];
-
     let userExists = users.find(user => user.email === email);
 
     if (userExists) {
@@ -26,17 +25,13 @@ function register() {
     }
 
     users.push({ username, email, password });
-
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("loggedInUser", username);
 
     window.location.href = "dashboard.html";
 }
 
-
-
 function login() {
-
     let email = document.getElementById("loginEmail").value;
     let password = document.getElementById("loginPassword").value;
 
@@ -54,18 +49,12 @@ function login() {
     }
 }
 
-
-
 function logout() {
     localStorage.removeItem("loggedInUser");
     window.location.href = "login.html";
 }
 
-
-
-
 function protectDashboard() {
-
     let currentUser = localStorage.getItem("loggedInUser");
 
     if (!currentUser) {
@@ -80,47 +69,67 @@ function protectDashboard() {
 }
 
 
-
-
 let products = JSON.parse(localStorage.getItem("products")) || [];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let editIndex = null;
-
-
 
 function displayDashboardProducts(list = products) {
 
-    let tableBody = document.querySelector("#dashboardTable tbody");
-    if (!tableBody) return;
+    let dashboardBody = document.querySelector("#dashboardTable tbody");
+    let productBody = document.querySelector("#productTable tbody");
 
-    tableBody.innerHTML = "";
+    if (dashboardBody) dashboardBody.innerHTML = "";
+    if (productBody) productBody.innerHTML = "";
 
     list.forEach((p, index) => {
 
-        let row = document.createElement("tr");
+        let statusText = p.quantity > 0 ? "IN STOCK" : "OUT STOCK";
+        let statusClass = p.quantity > 0 ? "in-stock" : "out-stock";
+        let rowClass = p.quantity > 0 ? "row-in" : "row-out";
 
-        row.innerHTML = `
-            <td>${p.name}</td>
-            <td>${p.id}</td>
-            <td>${p.quantity}</td>
-            <td>${p.price}</td>
-            <td>
-                <button onclick="editProduct(${index})">Edit</button>
-                <button onclick="deleteProduct(${index})">Delete</button>
-            </td>
-        `;
+        
+        if (dashboardBody) {
+            let row = document.createElement("tr");
+            row.classList.add(rowClass);
 
-        tableBody.appendChild(row);
+            row.innerHTML = `
+                <td>${p.name}</td>
+                <td>${p.id}</td>
+                <td>${p.quantity}</td>
+                <td>${p.price}</td>
+                <td class="${statusClass}">${statusText}</td>
+                <td>
+                    <button onclick="editProduct(${index})">Edit</button>
+                    <button onclick="deleteProduct(${index})">Delete</button>
+                </td>
+            `;
+
+            dashboardBody.appendChild(row);
+        }
+
+        
+        if (productBody) {
+            let row2 = document.createElement("tr");
+            row2.classList.add(rowClass);
+
+            row2.innerHTML = `
+                <td>${p.name}</td>
+                <td>${p.id}</td>
+                <td>${p.quantity}</td>
+                <td>${p.price}</td>
+                <td class="${statusClass}">${statusText}</td>
+            `;
+
+            productBody.appendChild(row2);
+        }
     });
+
+    updateDashboard();
 }
-
-
 
 let form = document.getElementById("productForm");
 
 if (form) {
     form.addEventListener("submit", function (e) {
-
         e.preventDefault();
 
         let product = {
@@ -144,10 +153,7 @@ if (form) {
     });
 }
 
-
-
 function editProduct(index) {
-
     let product = products[index];
 
     document.getElementById("productName").value = product.name;
@@ -158,23 +164,16 @@ function editProduct(index) {
     editIndex = index;
 }
 
-
-
 function deleteProduct(index) {
-
     if (confirm("Delete this product?")) {
-
         products.splice(index, 1);
         localStorage.setItem("products", JSON.stringify(products));
         displayDashboardProducts();
+        updateDashboard();
     }
 }
 
-
-
-// SEARCH
 function searchProduct() {
-
     let input = document.getElementById("searchInput").value.toLowerCase();
 
     let filtered = products.filter(p =>
@@ -185,15 +184,55 @@ function searchProduct() {
 }
 
 
+function loadPage(page) {
+    let pages = document.querySelectorAll(".page");
+    pages.forEach(function (p) {
+        p.style.display = "none";
+    });
 
-// ================= PAGE LOAD =================
+    document.getElementById(page + "Page").style.display = "block";
+
+    displayDashboardProducts();
+}
+
+function updateDashboard(){
+
+    let total = products.length;
+    let inStock = 0;
+    let outStock = 0;
+
+    products.forEach(product => {
+        if(product.quantity > 0){
+            inStock++;
+        }else{
+            outStock++;
+        }
+    });
+
+    let inPercent = total === 0 ? 0 : ((inStock/total)*100).toFixed(1);
+    let outPercent = total === 0 ? 0 : ((outStock/total)*100).toFixed(1);
+
+    document.getElementById("totalProduct").innerText = total;
+    document.getElementById("inStock").innerText = inStock;
+    document.getElementById("outStock").innerText = outStock;
+
+    document.getElementById("inPercent").innerText = inPercent + "%";
+    document.getElementById("outPercent").innerText = outPercent + "%";
+
+    let inText = document.getElementById("inStockText");
+    let outText = document.getElementById("outStockText");
+
+    if(inText) inText.style.color = inStock > 0 ? "green" : "black";
+    if(outText) outText.style.color = outStock > 0 ? "red" : "black";
+}
+
 
 window.onload = function () {
 
-    // If dashboard page exists → protect it
     if (document.getElementById("dashboardTable")) {
         protectDashboard();
     }
 
     displayDashboardProducts();
+    updateDashboard();
 };

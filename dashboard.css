@@ -131,3 +131,24 @@ input{
   padding: 5px;
   margin-top: 10px;
 }
+.in-stock{
+    color: green;
+    font-weight: bold;
+}
+
+.out-stock{
+    color: red;
+    font-weight: bold;
+}
+
+.row-in{
+    background-color: #e6ffe6;
+}
+
+.row-out{
+    background-color: #ffe6e6;
+}
+.fi{
+  justify-content: space-between;
+  display: flex;
+}
